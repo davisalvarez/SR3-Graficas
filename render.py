@@ -163,6 +163,48 @@ class render(object):
                     y -= 1
                 cambiar += 1
 
+    def glLineIMG(self, x0, y0, x1, y1):
+
+        dx = abs(x1 - x0)
+        dy = abs(y1 - y0)
+
+        steep = dy > dx
+
+        if steep:
+            x0, y0 = y0, x0
+            x1, y1 = y1, x1
+
+        if x0 > x1:
+            x0, x1 = x1, x0
+            y0, y1 = y1, y0
+
+        dx = abs(x1 - x0)
+        dy = abs(y1 - y0)
+
+        cambioPixel = 0
+        cambiar = 0.5
+
+        try:
+            m = dy / dx
+        except ZeroDivisionError:
+            pass
+        else:
+            y = y0
+
+            for x in range(x0, x1 + 1):
+                if steep:
+                    self.pintarPixelIMG(y, x)
+                else:
+                    self.pintarPixelIMG(x, y)
+
+                cambioPixel += m
+                if cambioPixel >= cambiar:
+                    if y1 > y0:
+                        y += 1
+                    else:
+                        y -= 1
+                    cambiar += 1
+
     def paintModelOBJ(self, filename, translate, scale):
         model = ModeloOBJ(filename)
         #print(str(model.faces))
@@ -177,8 +219,11 @@ class render(object):
 
                 x0 = round(v1[0] * scale[0] + translate[0])
                 y0 = round(v1[1] * scale[0] + translate[0])
+                x1 = round(v2[0] * scale[0] + translate[0])
+                y1 = round(v2[1] * scale[0] + translate[0])
 
-                self.pintarPixelIMG(x0, y0)
+                #self.pintarPixelIMG(x1, y1)
+                self.glLineIMG(x0, y0, x1, y1)
 
 
 
