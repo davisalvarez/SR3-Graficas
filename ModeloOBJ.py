@@ -34,8 +34,19 @@ class ModeloOBJ(object):
                     caras =  valor.split(' ')
                     lista=[]
                     for cara in caras:
-                        lista.append(list(map(int, cara.split('/'))))
-                        #self.faces.append(list(map(int, cara.split('/'))))
+                        if cara!='':
+                            c = cara.split('/')
+                            vector=[]
+                            for x in c:
+                                try:
+                                    vector.append(int(x))
+                                except:
+                                    print("no int")
+                            lista.append(vector)
+
+                            #lista.append(list(map(int, cara.split('/'))))
+
+                            #self.faces.append(list(map(int, cara.split('/'))))
                     self.faces.append(lista)
 
 
